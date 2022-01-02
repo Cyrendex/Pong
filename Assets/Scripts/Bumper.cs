@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bumper : MonoBehaviour
 {
     [SerializeField] public int bumperNumber;
-    [SerializeField] float speed = 5f;
+    [SerializeField] public float speed = 5f;
     Rigidbody2D rb;
 
     string verticalControls;
