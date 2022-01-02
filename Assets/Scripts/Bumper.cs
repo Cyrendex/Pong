@@ -9,7 +9,7 @@ public class Bumper : MonoBehaviour
     Rigidbody2D rb;
 
     string verticalControls;
-    float movement;
+    public float movement;
 
     void Start()
     {

@@ -144,3 +144,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  speedMultiplier: 1.1
+  lastCollidedBumper: {fileID: 0}
