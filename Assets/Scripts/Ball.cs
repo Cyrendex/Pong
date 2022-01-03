@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] public float speed = 5.0f;
-    [SerializeField] public float speedMultiplier = 1.15f;
+    [SerializeField] 
+    public float speed = 5.0f;
+
+    [SerializeField] 
+    public float speedMultiplier = 1.15f;
+
+    public Vector3 startingPosition;
     public PlayerBumper lastCollidedBumper;
     public BumperTrigger lastCollidedBumperTrigger;
     private Rigidbody2D rb;
@@ -13,6 +18,7 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        startingPosition = transform.position;
         LaunchBall();
     }
 
@@ -41,5 +47,14 @@ public class Ball : MonoBehaviour
     private bool CollidedObjectIsABumper(Collision2D collision)
     {
         return collision.gameObject.CompareTag("Bumper");
+    }
+
+    public void ResetBall()
+    {
+        rb.velocity = Vector2.zero;
+        transform.position = startingPosition;
+        lastCollidedBumper = null;
+        lastCollidedBumperTrigger = null;
+        LaunchBall();
     }
 }

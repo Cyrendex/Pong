@@ -10,14 +10,16 @@ public class PlayerBumper : MonoBehaviour
     [SerializeField]
     public float speed = 5f;
 
+    Vector3 startingPosition;
     public int score;
     Rigidbody2D rb;
-    string verticalControls;
+    string controls;
     public float movement;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        startingPosition = transform.position;
         AssignCorrectControls();
     }
 
@@ -33,16 +35,22 @@ public class PlayerBumper : MonoBehaviour
 
     private void AssignCorrectControls()
     {
-        verticalControls = "Vertical" + bumperNumber;
+        controls = "Player" + bumperNumber;
     }
 
     private void ReadMovement()
     {
-        movement = Input.GetAxisRaw(verticalControls);
+        movement = Input.GetAxisRaw(controls);
     }
 
     private void Move()
     {
         rb.velocity = new Vector2(rb.velocity.x, movement * speed);
+    }
+
+    public void ResetBumper()
+    {
+        rb.velocity = Vector2.zero;
+        transform.position = startingPosition;
     }
 }

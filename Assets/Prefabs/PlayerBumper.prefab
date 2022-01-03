@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1593937146748550117}
   - component: {fileID: 8739435291084410216}
+  - component: {fileID: 4510643014885653357}
   m_Layer: 0
   m_Name: BumperTrigger
   m_TagString: Untagged
@@ -57,6 +58,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4510643014885653357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335101227683615332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ed5084d91ebeb488d1f2ac85591806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3692525878188792550
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,4 +216,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bumperNumber: 0
   speed: 5
+  score: 0
   movement: 0
