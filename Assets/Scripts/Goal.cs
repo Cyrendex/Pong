@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (CollidedWithABall(collision))
         {
-            Bumper lastCollidedBumper = collision.gameObject.GetComponent<Ball>().lastCollidedBumper;
-            if (Bumper != null) { }
+            BumperTrigger lastCollidedBumperTrigger = collision.gameObject.GetComponent<Ball>().lastCollidedBumperTrigger;
+            if (lastCollidedBumperTrigger != null)
+            {
+
+            }
         }
     }
 

@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 8011603395824143523}
   - component: {fileID: 6119167343630608281}
   m_Layer: 0
-  m_Name: Bumper
+  m_Name: PlayerBumper
   m_TagString: Bumper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

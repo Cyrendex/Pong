@@ -6,7 +6,8 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] public float speed = 5.0f;
     [SerializeField] public float speedMultiplier = 1.15f;
-    public Bumper lastCollidedBumper;
+    public PlayerBumper lastCollidedBumper;
+    public BumperTrigger lastCollidedBumperTrigger;
     private Rigidbody2D rb;
     
     void Start()
@@ -31,7 +32,7 @@ public class Ball : MonoBehaviour
     {
         if (CollidedObjectIsABumper(collision))
         {
-            lastCollidedBumper = collision.gameObject.GetComponent<Bumper>();
+            lastCollidedBumper = collision.gameObject.GetComponent<PlayerBumper>();
             float transferredMomentum = lastCollidedBumper.movement;
             rb.velocity = new Vector2(rb.velocity.x * speedMultiplier, rb.velocity.y + (transferredMomentum * (rb.velocity.x / 4))); // Speeds up the ball and slightly alters y velocity depending on the bumper's movement.
         }

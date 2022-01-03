@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bumper : MonoBehaviour
+public class PlayerBumper : MonoBehaviour
 {
     [SerializeField] 
     public int bumperNumber;
@@ -10,6 +10,7 @@ public class Bumper : MonoBehaviour
     [SerializeField]
     public float speed = 5f;
 
+    public int score;
     Rigidbody2D rb;
     string verticalControls;
     public float movement;

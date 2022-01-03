@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class BumperTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (CollidedWithABall(collision))
+        {
+            Ball ball = collision.gameObject.GetComponent<Ball>();
+            ball.lastCollidedBumperTrigger = this.gameObject.GetComponent<BumperTrigger>();
+        }
     }
-
-    // Update is called once per frame
-    void Update()
+    private bool CollidedWithABall(Collider2D collision)
     {
-        
+        return collision.gameObject.CompareTag("Ball");
     }
 }
