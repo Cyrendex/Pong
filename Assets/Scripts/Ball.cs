@@ -12,7 +12,6 @@ public class Ball : MonoBehaviour
 
     public Vector3 startingPosition;
     public PlayerBumper lastCollidedBumper;
-    public BumperTrigger lastCollidedBumperTrigger;
     private Rigidbody2D rb;
     
     void Start()
@@ -20,11 +19,6 @@ public class Ball : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         startingPosition = transform.position;
         LaunchBall();
-    }
-
-    void Update()
-    {
-        
     }
 
     private void LaunchBall()
@@ -40,7 +34,7 @@ public class Ball : MonoBehaviour
         {
             lastCollidedBumper = collision.gameObject.GetComponent<PlayerBumper>();
             float transferredMomentum = lastCollidedBumper.movement;
-            rb.velocity = new Vector2(rb.velocity.x * speedMultiplier, rb.velocity.y + (transferredMomentum * (rb.velocity.x / 4))); // Speeds up the ball and slightly alters y velocity depending on the bumper's movement.
+            rb.velocity = new Vector2(rb.velocity.x * speedMultiplier, rb.velocity.y + (transferredMomentum * (Mathf.Abs(rb.velocity.x) / 4))); // Speeds up the ball and slightly alters y velocity depending on the bumper's movement.
         }
     }
 
@@ -54,7 +48,6 @@ public class Ball : MonoBehaviour
         rb.velocity = Vector2.zero;
         transform.position = startingPosition;
         lastCollidedBumper = null;
-        lastCollidedBumperTrigger = null;
         LaunchBall();
     }
 }

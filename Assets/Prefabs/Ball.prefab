@@ -122,7 +122,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.01
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -145,4 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   speedMultiplier: 1.1
+  startingPosition: {x: 0, y: 0, z: 0}
   lastCollidedBumper: {fileID: 0}
+  lastCollidedBumperTrigger: {fileID: 0}

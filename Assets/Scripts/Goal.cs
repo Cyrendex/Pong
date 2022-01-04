@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
+    public PlayerBumper owner;
     GameHandler2P gameHandler;
 
     void Start()
@@ -14,12 +15,21 @@ public class Goal : MonoBehaviour
     {
         if (CollidedWithABall(collision))
         {
-            BumperTrigger lastCollidedBumperTrigger = collision.gameObject.GetComponent<Ball>().lastCollidedBumperTrigger;
-            if (lastCollidedBumperTrigger != null)
+            PlayerBumper lastCollidedBumper = collision.gameObject.GetComponent<Ball>().lastCollidedBumper;
+            if (lastCollidedBumper != null)
             {
-                PlayerBumper player = lastCollidedBumperTrigger.GetComponentInParent<PlayerBumper>();
-                player.score++;
-                Debug.Log("Player " + player.bumperNumber + "'s score: " + player.score);                
+                PlayerBumper player = lastCollidedBumper.GetComponent<PlayerBumper>();
+
+                if (PlayerScoredIntoOwnGoal(player))
+                {
+                    Debug.Log("Player " + player.bumperNumber + " scored into their own goal. Deducting a point.");
+                    player.score--;                    
+                }
+                else
+                {
+                    player.score++;
+                    Debug.Log("Player " + player.bumperNumber + "'s score: " + player.score);
+                }               
             }
             else
             {
@@ -29,6 +39,10 @@ public class Goal : MonoBehaviour
         }
     }
 
+    private bool PlayerScoredIntoOwnGoal(PlayerBumper player)
+    {
+        return owner == player;
+    }
     private bool CollidedWithABall(Collider2D collision)
     {
         return collision.gameObject.CompareTag("Ball");
