@@ -13,30 +13,30 @@ public class Goal : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (CollidedWithABall(collision))
-        {
-            PlayerBumper lastCollidedBumper = collision.gameObject.GetComponent<Ball>().lastCollidedBumper;
-            if (lastCollidedBumper != null)
-            {
-                PlayerBumper player = lastCollidedBumper.GetComponent<PlayerBumper>();
+        if (!CollidedWithABall(collision))
+            return;
 
-                if (PlayerScoredIntoOwnGoal(player))
-                {
-                    Debug.Log("Player " + player.bumperNumber + " scored into their own goal. Deducting a point.");
-                    player.score--;                    
-                }
-                else
-                {
-                    player.score++;
-                    Debug.Log("Player " + player.bumperNumber + "'s score: " + player.score);
-                }               
+        PlayerBumper lastCollidedBumper = collision.gameObject.GetComponent<Ball>().lastCollidedBumper;
+        if (lastCollidedBumper != null)
+        {
+            PlayerBumper player = lastCollidedBumper.GetComponent<PlayerBumper>();
+
+            if (PlayerScoredIntoOwnGoal(player))
+            {
+                player.score--;
             }
             else
             {
-                Debug.Log("Nobody hit the ball!");
+                player.score++;
             }
-            gameHandler.ResetPositions();
         }
+        else
+        {
+            Debug.Log("Nobody hit the ball!");
+        }
+        gameHandler.UpdateScores();
+        gameHandler.ResetPositions();
+
     }
 
     private bool PlayerScoredIntoOwnGoal(PlayerBumper player)
@@ -52,4 +52,6 @@ public class Goal : MonoBehaviour
     {
         gameHandler = GameObject.Find("GameHandler").GetComponent<GameHandler2P>();
     }
+
+    
 }

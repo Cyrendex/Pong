@@ -1,20 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBumper : MonoBehaviour
 {
-    [SerializeField] 
     public int bumperNumber;
-
-    [SerializeField]
     public float speed = 5f;
 
-    Vector3 startingPosition;
+    [NonSerialized]
     public int score;
+
+    [NonSerialized]
+    public float movement;
+
+    Vector3 startingPosition;    
     Rigidbody2D rb;
     string controls;
-    public float movement;
+    
 
     void Start()
     {
