@@ -14,6 +14,9 @@ public class PlayerBumper : MonoBehaviour
     [NonSerialized]
     public float movement;
 
+    [NonSerialized]
+    public Material material;
+
     Vector3 startingPosition;    
     Rigidbody2D rb;
     string controls;
@@ -23,6 +26,7 @@ public class PlayerBumper : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         startingPosition = transform.position;
+        material = GetComponent<Renderer>().material;
         AssignCorrectControls();
     }
 

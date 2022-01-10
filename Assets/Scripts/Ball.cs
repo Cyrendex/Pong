@@ -12,10 +12,13 @@ public class Ball : MonoBehaviour
     [NonSerialized]
     public PlayerBumper lastCollidedBumper;
 
+    [NonSerialized]
+    public TrailRenderer trailRenderer;
+
     [SerializeField]
     private Material defaultTrailMaterial;
 
-    private TrailRenderer trailRenderer;
+
     private Vector3 startingPosition;
     private Rigidbody2D rb;    
     
@@ -56,7 +59,7 @@ public class Ball : MonoBehaviour
     public void ResetBall()
     {
         rb.velocity = Vector2.zero;
-        GetComponent<TrailRenderer>().material = defaultTrailMaterial;
+        trailRenderer.material = defaultTrailMaterial;
         transform.position = startingPosition;
         lastCollidedBumper = null;
         LaunchBall();
@@ -64,7 +67,7 @@ public class Ball : MonoBehaviour
 
     private void SetTrailColorToBumperColor()
     {
-        trailRenderer.material = lastCollidedBumper.GetComponent<Renderer>().material;
+        trailRenderer.material = lastCollidedBumper.material;
     }
 
     private void LimitBallSpeed()
