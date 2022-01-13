@@ -8,6 +8,7 @@ TagManager:
   - Ball
   - Goal
   - Split Ball
+  - Power Up
   layers:
   - Default
   - TransparentFX

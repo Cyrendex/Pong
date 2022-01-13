@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour
     private Vector3 startingPosition;
     private Rigidbody2D rb;    
     
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         trailRenderer = GetComponent<TrailRenderer>();
