@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
     public PlayerBumper owner;
     GameHandler2P gameHandler;
+    Ball ball;
 
     void Start()
     {
@@ -16,15 +18,20 @@ public class Goal : MonoBehaviour
     {
         if (!CollidedWithABall(collision))
             return;
+        
+        ball = collision.gameObject.GetComponent<Ball>();
+        PlayerBumper lastCollidedBumper = ball.lastCollidedBumper;
 
-        PlayerBumper lastCollidedBumper = collision.gameObject.GetComponent<Ball>().lastCollidedBumper;
         if (lastCollidedBumper != null)
         {
             PlayerBumper player = lastCollidedBumper.GetComponent<PlayerBumper>();
 
             if (PlayerScoredIntoOwnGoal(player))
             {
-                player.score--;
+                if (NoOneHitTheBallBefore())
+                    player.score--;
+                else
+                    GiveAPointToPreviousPlayer();
             }
             else
             {
@@ -36,9 +43,17 @@ public class Goal : MonoBehaviour
             Debug.Log("Nobody hit the ball!");
         }
 
+        Destroy(ball.gameObject);
+        gameHandler.ballCount--;
+
         gameHandler.UpdateScores();
+
+        if (gameHandler.MoreBallsLeft())
+            return;
+
         gameHandler.ResetPositions();
-        DestroyCloneBalls();
+        gameHandler.DestroySpawnedGameObjects();
+        gameHandler.InstantiateBall();
     }
 
     private bool PlayerScoredIntoOwnGoal(PlayerBumper player)
@@ -56,14 +71,19 @@ public class Goal : MonoBehaviour
         gameHandler = GameObject.Find("GameHandler").GetComponent<GameHandler2P>();
     }
 
-    private void DestroyCloneBalls()
+    private bool NoOneHitTheBallBefore()
     {
-        GameObject[] clones = GameObject.FindGameObjectsWithTag("Split Ball");
-
-        if(clones.Length > 0)
-            foreach (GameObject clone in clones)
-            {
-                Destroy(clone);
-            }
+        return ball.previousCollidedBumper == null;
     }
+
+    private void GiveAPointToPreviousPlayer()
+    {
+        PlayerBumper previousPlayer = ball.previousCollidedBumper;
+        previousPlayer.score++;
+    }
+
+    private bool CollidedWithASplitBall()
+    {
+        return ball.gameObject.CompareTag("Split Ball");
+    }    
 }

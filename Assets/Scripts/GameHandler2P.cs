@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,22 +18,24 @@ public class GameHandler2P : MonoBehaviour
     public Text p1Score;
     public Text p2Score;
 
+    [SerializeField]
+    private Vector3 ballPosition;
+
+    [NonSerialized]
+    public int ballCount;
+
     void Start()
     {
+        ballCount = GameObject.FindGameObjectsWithTag("Ball").Length;
         SetTextColors();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ballPosition = new Vector3(0, 0, 0);
     }
 
     public void ResetPositions()
     {
-        ball.GetComponent<Ball>().ResetBall();
-        player1.GetComponent<PlayerBumper>().ResetBumper();
-        player2.GetComponent<PlayerBumper>().ResetBumper();
+        // ball.ResetBall();
+        player1.ResetBumper();
+        player2.ResetBumper();
     }
 
     public void UpdateScores()
@@ -44,5 +48,31 @@ public class GameHandler2P : MonoBehaviour
     {
         p1Score.color = player1.GetComponent<Renderer>().material.color;
         p2Score.color = player2.GetComponent<Renderer>().material.color;
+    }
+
+    private void DestroyPowerUps()
+    {
+        GameObject[] powerups = GameObject.FindGameObjectsWithTag("Power Up");
+
+        if (powerups.Length > 0)
+            foreach (GameObject powerup in powerups)
+            {
+                Destroy(powerup);
+            }
+    }
+
+    public void DestroySpawnedGameObjects()
+    {
+        DestroyPowerUps();
+    }
+
+    public void InstantiateBall()
+    {
+        Instantiate(ball, ballPosition, Quaternion.identity);
+    }
+
+    public bool MoreBallsLeft()
+    {
+        return ballCount > 0;
     }
 }

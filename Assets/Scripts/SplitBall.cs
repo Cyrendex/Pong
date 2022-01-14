@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SplitBall : MonoBehaviour
 {
+    GameHandler2P gameHandler;
+    
     PlayerBumper lastCollidedBumper;
 
     Ball splitBall;
@@ -13,6 +15,11 @@ public class SplitBall : MonoBehaviour
     Rigidbody2D rbMain;
 
     float offsetAmount = 1.5f;
+
+    private void Awake()
+    {
+        AssignAppropriateGameHandler();
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -29,7 +36,8 @@ public class SplitBall : MonoBehaviour
         splitBall = Instantiate(mainBall, pos, Quaternion.identity);
         CopyMainBallToClone();
         splitBall.tag = "Split Ball";
-
+        gameHandler.ballCount++;
+        
         rbSplit = splitBall.GetComponent<Rigidbody2D>();       
         AdjustSplitBallVelocity();
 
@@ -57,6 +65,10 @@ public class SplitBall : MonoBehaviour
     {
         return lastCollidedBumper == null;
     }
+    private void AssignAppropriateGameHandler()
+    {
+        gameHandler = GameObject.Find("GameHandler").GetComponent<GameHandler2P>();
+    }
 
     /*
      * The adjustments are done by the following logic:
@@ -64,7 +76,9 @@ public class SplitBall : MonoBehaviour
      * -If the ball wasn't hit by a bumper, both x and y components are reversed to prevent unfair advantage.
      * -If the ball is hit by a bumper that has vertical controls, the y velocity is reversed and the ball is shifted to the opposite of main ball's y direction to avoid collisions.
      * -If the ball is hit by a bumper that has horizontal controls, the x velocity is reversed and the ball is shifted to the opposite of main ball's x direction to avoid collisions.
+     * 
      */
+
     private void AdjustSplitBallVelocity()
     {
         Vector2 newVelocity;

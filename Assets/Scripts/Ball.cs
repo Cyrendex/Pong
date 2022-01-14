@@ -13,6 +13,9 @@ public class Ball : MonoBehaviour
     public PlayerBumper lastCollidedBumper;
 
     [NonSerialized]
+    public PlayerBumper previousCollidedBumper;
+
+    [NonSerialized]
     public TrailRenderer trailRenderer;
 
     [SerializeField]
@@ -27,7 +30,6 @@ public class Ball : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         trailRenderer = GetComponent<TrailRenderer>();
         trailRenderer.material = defaultTrailMaterial;
-        startingPosition = transform.position;
         LaunchBall();
     }
 
@@ -38,12 +40,18 @@ public class Ball : MonoBehaviour
         rb.velocity = new Vector2(speed * randomX, speed * randomY);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collidedObject)
     {
-        if (CollidedObjectIsABumper(collision))
+        if (CollidedObjectIsABumper(collidedObject))
         {
-            
-            lastCollidedBumper = collision.gameObject.GetComponent<PlayerBumper>();
+            PlayerBumper collidedBumper = collidedObject.gameObject.GetComponent<PlayerBumper>();
+
+            if (BallDidntCollideWithSameBumper(collidedBumper))             
+                if (PreviousBumperIsntLastBumper())
+                    previousCollidedBumper = lastCollidedBumper;               
+
+            lastCollidedBumper = collidedBumper;
+
             float transferredMomentum = lastCollidedBumper.movement;
             rb.velocity = new Vector2(rb.velocity.x * speedMultiplier, rb.velocity.y + (transferredMomentum * (Mathf.Abs(rb.velocity.x) / 4))); // Speeds up the ball and slightly alters y velocity depending on the bumper's movement.
             LimitBallSpeed();
@@ -62,6 +70,7 @@ public class Ball : MonoBehaviour
         trailRenderer.material = defaultTrailMaterial;
         transform.position = startingPosition;
         lastCollidedBumper = null;
+        previousCollidedBumper = null;
         LaunchBall();
     }
 
@@ -74,4 +83,14 @@ public class Ball : MonoBehaviour
     {
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
     }
+
+    private bool BallDidntCollideWithSameBumper(PlayerBumper collidedBumper)
+    {
+        return lastCollidedBumper != collidedBumper;
+    }
+
+    private bool PreviousBumperIsntLastBumper()
+    {
+        return previousCollidedBumper != lastCollidedBumper;
+    }    
 }
