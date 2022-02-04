@@ -19,21 +19,39 @@ public class GameHandler2P : MonoBehaviour
     public Text p2Score;
 
     [SerializeField]
-    private Vector3 ballPosition;
+    Vector3 ballPosition;
 
     [NonSerialized]
     public int ballCount;
 
+
+    public bool enabledPowerUps;
+    GameObject[] allPowerUps;
+    Vector3 center;
+
+    [SerializeField]
+    Vector2 size;
+
+    [SerializeField]
+    float powerUpSpawnInterval;
+
+
     void Start()
     {
+        center = transform.position;
         ballCount = GameObject.FindGameObjectsWithTag("Ball").Length;
         SetTextColors();
         ballPosition = new Vector3(0, 0, 0);
+
+        if (enabledPowerUps)
+        {
+            allPowerUps = Resources.LoadAll<GameObject>("PowerUps");
+            StartCoroutine(PowerUpCycle());
+        }            
     }
 
     public void ResetPositions()
     {
-        // ball.ResetBall();
         player1.ResetBumper();
         player2.ResetBumper();
     }
@@ -74,5 +92,27 @@ public class GameHandler2P : MonoBehaviour
     public bool MoreBallsLeft()
     {
         return ballCount > 0;
+    }
+
+    void SpawnRandomPowerUp()
+    {
+        float posX, posY;
+        Vector3 position;
+
+        posX = UnityEngine.Random.Range(-size.x / 2, size.x / 2);
+        posY = UnityEngine.Random.Range(-size.y / 2, size.y / 2);
+
+        position = new Vector3(posX, posY, 0);
+
+        int powerUpIndex = UnityEngine.Random.Range(0, allPowerUps.Length);
+
+        Instantiate(allPowerUps[powerUpIndex], position, Quaternion.identity);
+    }
+
+    IEnumerator PowerUpCycle()
+    {
+        SpawnRandomPowerUp();
+        yield return new WaitForSeconds(powerUpSpawnInterval);
+        StartCoroutine(PowerUpCycle());
     }
 }
